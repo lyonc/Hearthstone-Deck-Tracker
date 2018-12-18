@@ -69,8 +69,20 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.Options.Overlay
 			ComboBoxCthun.SelectedItem = Config.Instance.PlayerCthunCounter;
 			ComboBoxSpells.ItemsSource = Enum.GetValues(typeof(DisplayMode)).Cast<DisplayMode>();
 			ComboBoxSpells.SelectedItem = Config.Instance.PlayerSpellsCounter;
+			ComboBoxJade.ItemsSource = Enum.GetValues(typeof(DisplayMode)).Cast<DisplayMode>();
+			ComboBoxJade.SelectedItem = Config.Instance.PlayerJadeCounter;
+			ComboBoxPogoHopper.ItemsSource = Enum.GetValues(typeof(DisplayMode)).Cast<DisplayMode>();
+			ComboBoxPogoHopper.SelectedItem = Config.Instance.PlayerPogoHopperCounter;
+
 
 			ElementSorterPlayer.IsPlayer = true;
+			SetPanel();
+
+			_initialized = true;
+		}
+
+		private void SetPanel()
+		{
 			foreach(var panel in Config.Instance.DeckPanelOrderPlayer)
 			{
 				switch(panel)
@@ -101,7 +113,12 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.Options.Overlay
 						break;
 				}
 			}
-			_initialized = true;
+		}
+
+		public void ReloadUI()
+		{
+			ElementSorterPlayer.Clear();
+			SetPanel();
 		}
 
 		private void CheckboxHighlightCardsInHand_Checked(object sender, RoutedEventArgs e)
@@ -254,6 +271,14 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.Options.Overlay
 			Config.Save();
 		}
 
+		private void ComboBoxJade_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (!_initialized)
+				return;
+			Config.Instance.PlayerJadeCounter = (DisplayMode)ComboBoxJade.SelectedItem;
+			Config.Save();
+		}
+
 		private void CheckBoxAttack_Checked(object sender, RoutedEventArgs e)
 		{
 			if(!_initialized)
@@ -267,6 +292,14 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.Options.Overlay
 			if(!_initialized)
 				return;
 			Config.Instance.HidePlayerAttackIcon = true;
+			Config.Save();
+		}
+
+		private void ComboBoxPogoHopper_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (!_initialized)
+				return;
+			Config.Instance.PlayerPogoHopperCounter = (DisplayMode)ComboBoxPogoHopper.SelectedItem;
 			Config.Save();
 		}
 	}
